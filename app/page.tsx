@@ -78,14 +78,9 @@ const services = [
 
 const projects = [
   {
-    name: "TechMart",
+    name: "ELPATRON HUB",
     description: "A cutting-edge e-commerce platform for electronics",
     image: "/project1.jpg",
-  },
-  {
-    name: "FitnessPal",
-    description: "Comprehensive fitness tracking app with cloud integration",
-    image: "/project2.jpg",
   },
   {
     name: "EcoSmart",
@@ -96,7 +91,7 @@ const projects = [
     name: "PredictAI",
     description:
       "Advanced machine learning pipeline for predictive analytics in finance",
-    image: "/project4.jpg",
+    image: "/project4.svg",
   },
 ];
 
@@ -129,19 +124,19 @@ const testimonials = [
 
 const developers = [
   {
-    name: "Sarah Lee",
+    name: "Shem Itoya",
     role: "Frontend Developer",
     skills: "React, Next.js, Tailwind CSS",
     image: "/developer1.jpg",
   },
   {
-    name: "Michael Chen",
+    name: "Jeffrey Omamoke",
     role: "Backend Developer",
     skills: "Node.js, Express, MongoDB",
     image: "/developer2.jpg",
   },
   {
-    name: "Emily Rodriguez",
+    name: "Lesley Ayemi",
     role: "Full Stack Developer",
     skills: "Python, Django, React, PostgreSQL",
     image: "/developer3.jpg",
@@ -576,7 +571,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="bg-sky-600 text-white hover:bg-sky-700">
+              className="bg-sky-600 text-white hover:bg-sky-700 mb-4">
               <Link href="/contact">
                 Start Your Journey <ArrowRight className="ml-2" />
               </Link>
