@@ -8,8 +8,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  VibrateIcon,
+  MessageCircleIcon,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import emailjs from "@emailjs/browser";
 
 const fadeIn = {
@@ -195,7 +202,8 @@ export default function Contact() {
                 <div>
                   <h3 className="font-semibold text-sky-800">Address</h3>
                   <p className="text-gray-600">
-                    123 Web Dev Street, Digital City, 12345
+                    160 Off Aworenshoki Expressway Iduma Street Ikeja Lagos,
+                    12345
                   </p>
                 </div>
               </motion.div>
@@ -216,6 +224,18 @@ export default function Contact() {
                   <h3 className="font-semibold text-sky-800">Email</h3>
                   <p className="text-gray-600">info@dinstack.com.ng</p>
                 </div>
+              </motion.div>
+              <motion.div
+                variants={fadeIn}
+                className="flex items-start space-x-4">
+                <Link href="https://wa.me/message/PRNTIYGBIOHLA1" passHref>
+                  <Button
+                    className="bg-green-500 text-white hover:bg-green-600 mt-4"
+                    rel="noopener noreferrer">
+                    <VibrateIcon className="w-10 h-10" />
+                    Contact Us via WhatsApp
+                  </Button>
+                </Link>
               </motion.div>
             </motion.div>
           </div>
