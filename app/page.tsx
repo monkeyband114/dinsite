@@ -1,101 +1,666 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import Link from "next/link";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  ArrowRight,
+  ShoppingCart,
+  Plug,
+  Cloud,
+  Github,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Star,
+  Menu,
+  Brain,
+  BarChart,
+} from "lucide-react";
+
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const rotateIn = {
+  hidden: { opacity: 0, rotate: -5 },
+  visible: { opacity: 1, rotate: 0, transition: { duration: 0.8 } },
+};
+
+const services = [
+  {
+    name: "E-commerce Solutions",
+    description:
+      "Custom e-commerce websites using Shopify, WordPress, or built from scratch to suit your unique business needs.",
+    icon: <ShoppingCart className="w-6 h-6" />,
+  },
+  {
+    name: "API Integration & Plugin Development",
+    description:
+      "Seamless API adaptations and custom plugin development to extend your website's functionality.",
+    icon: <Plug className="w-6 h-6" />,
+  },
+  {
+    name: "Cloud Integration & Upgrades",
+    description:
+      "Modernize your web services with cloud integration (AWS, Azure, Oracle) and comprehensive upgrades.",
+    icon: <Cloud className="w-6 h-6" />,
+  },
+  {
+    name: "Machine Learning Pipeline",
+    description:
+      "End-to-end ML solutions from data preprocessing to model deployment and monitoring.",
+    icon: <Brain className="w-6 h-6" />,
+  },
+  {
+    name: "Data Analysis",
+    description:
+      "Comprehensive data analysis services to extract insights and drive informed decision-making.",
+    icon: <BarChart className="w-6 h-6" />,
+  },
+];
+
+const projects = [
+  {
+    name: "TechMart",
+    description: "A cutting-edge e-commerce platform for electronics",
+    image: "/project1.jpg",
+  },
+  {
+    name: "FitnessPal",
+    description: "Comprehensive fitness tracking app with cloud integration",
+    image: "/project2.jpg",
+  },
+  {
+    name: "EcoSmart",
+    description: "IoT-based smart home solution with custom plugins",
+    image: "/project3.jpg",
+  },
+  {
+    name: "PredictAI",
+    description:
+      "Advanced machine learning pipeline for predictive analytics in finance",
+    image: "/project4.jpg",
+  },
+];
+
+const testimonials = [
+  {
+    name: "John Doe",
+    company: "TechCorp",
+    comment:
+      "DinStack transformed our online presence. Their expertise in e-commerce solutions helped us increase our sales by 200%.",
+    rating: 5,
+    image: "/customer1.jpg",
+  },
+  {
+    name: "Jane Smith",
+    company: "FitLife",
+    comment:
+      "The team at DinStack delivered a robust fitness app that exceeded our expectations. Their cloud integration skills are top-notch!",
+    rating: 5,
+    image: "/customer2.jpg",
+  },
+  {
+    name: "Mike Johnson",
+    company: "GreenTech",
+    comment:
+      "DinStack's custom plugin development for our IoT platform was crucial in making our product stand out in the market.",
+    rating: 4,
+    image: "/customer3.jpg",
+  },
+];
+
+const developers = [
+  {
+    name: "Sarah Lee",
+    role: "Frontend Developer",
+    skills: "React, Next.js, Tailwind CSS",
+    image: "/developer1.jpg",
+  },
+  {
+    name: "Michael Chen",
+    role: "Backend Developer",
+    skills: "Node.js, Express, MongoDB",
+    image: "/developer2.jpg",
+  },
+  {
+    name: "Emily Rodriguez",
+    role: "Full Stack Developer",
+    skills: "Python, Django, React, PostgreSQL",
+    image: "/developer3.jpg",
+  },
+];
+
+const bannerImages = [
+  "/banner1.jpg",
+  "/banner2.jpg",
+  "/banner3.jpg",
+  "/banner4.jpg",
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [heroRef, heroInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const [servicesRef, servicesInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const [projectsRef, projectsInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const [testimonialsRef, testimonialsInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const [featuresRef, featuresInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const [developersRef, developersInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  const [ctaRef, ctaInView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % bannerImages.length,
+      );
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      <nav className="bg-sky-500 text-white shadow-md">
+        <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+          <Link href="/" className="font-bold text-xl">
+            DinStack
+          </Link>
+          <div className="hidden md:flex space-x-4">
+            <Link
+              href="/"
+              className="hover:text-sky-200 transition duration-300">
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="hover:text-sky-200 transition duration-300">
+              About
+            </Link>
+            <Link
+              href="/services"
+              className="hover:text-sky-200 transition duration-300">
+              Services
+            </Link>
+            <Link
+              href="/contact"
+              className="hover:text-sky-200 transition duration-300">
+              Contact
+            </Link>
+          </div>
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-white">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <nav className="flex flex-col space-y-4">
+                  <Link
+                    href="/"
+                    className="text-sky-600 hover:text-sky-800 transition duration-300">
+                    Home
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="text-sky-600 hover:text-sky-800 transition duration-300">
+                    About
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="text-sky-600 hover:text-sky-800 transition duration-300">
+                    Services
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="text-sky-600 hover:text-sky-800 transition duration-300">
+                    Contact
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
+          <Button
+            asChild
+            size="sm"
+            className="bg-sky-700 text-white hover:bg-sky-800 hidden md:inline-flex">
+            <Link href="/contact">Get Started</Link>
+          </Button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </nav>
+
+      <div className="space-y-24">
+        <motion.section
+          ref={heroRef}
+          initial="hidden"
+          animate={heroInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="relative h-screen flex items-center justify-center overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImageIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="absolute inset-0 z-0">
+              <Image
+                src={bannerImages[currentImageIndex]}
+                alt="Banner background"
+                layout="fill"
+                objectFit="cover"
+                quality={100}
+              />
+            </motion.div>
+          </AnimatePresence>
+          <div className="relative z-10 text-center text-white">
+            <motion.h1 variants={rotateIn} className="text-5xl font-bold mb-6">
+              Elevate Your Business with DinStack
+            </motion.h1>
+            <motion.p
+              variants={fadeIn}
+              className="text-xl mb-8 max-w-2xl mx-auto">
+              Unleash the power of professional web solutions and stunning
+              designs. Your success story starts here.
+            </motion.p>
+            <motion.div variants={fadeIn}>
+              <Button
+                asChild
+                size="lg"
+                className="bg-sky-700 text-white hover:bg-sky-800">
+                <Link href="/contact">
+                  Get Started <ArrowRight className="ml-2" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          ref={servicesRef}
+          initial="hidden"
+          animate={servicesInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="container mx-auto px-4">
+          <motion.h2
+            variants={fadeIn}
+            className="text-3xl font-bold text-center mb-12 text-sky-800">
+            Our Premium Services
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <motion.div key={index} variants={fadeIn}>
+                <Card className="hover:shadow-lg transition-shadow duration-300 border-sky-200">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-sky-700">
+                      {service.icon}
+                      <span className="ml-2">{service.name}</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription>{service.description}</CardDescription>
+                    <Button
+                      variant="outline"
+                      className="mt-4 text-sky-600 border-sky-600 hover:bg-sky-50">
+                      Learn More
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        <motion.section
+          ref={projectsRef}
+          initial="hidden"
+          animate={projectsInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="bg-sky-50 py-20">
+          <div className="container mx-auto px-4">
+            <motion.h2
+              variants={fadeIn}
+              className="text-3xl font-bold text-center mb-12 text-sky-800">
+              Our Latest Projects
+            </motion.h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeIn}
+                  className="bg-white rounded-lg overflow-hidden shadow-lg">
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-2 text-sky-700">
+                      {project.name}
+                    </h3>
+                    <p className="text-gray-600">{project.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          ref={testimonialsRef}
+          initial="hidden"
+          animate={testimonialsInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="container mx-auto px-4">
+          <motion.h2
+            variants={fadeIn}
+            className="text-3xl font-bold text-center mb-12 text-sky-800">
+            What Our Customers Say
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                variants={fadeIn}
+                className="bg-white p-6 rounded-lg shadow-lg border border-sky-200">
+                <div className="flex items-center mb-4">
+                  <Image
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    width={60}
+                    height={60}
+                    className="rounded-full mr-4"
+                  />
+                  <div>
+                    <div className="font-semibold text-sky-700">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {testimonial.company}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${
+                        i < testimonial.rating
+                          ? "text-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                      fill="currentColor"
+                    />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-4">"{testimonial.comment}"</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        <motion.section
+          ref={featuresRef}
+          initial="hidden"
+          animate={featuresInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="bg-sky-100 py-20">
+          <div className="container mx-auto px-4">
+            <motion.h2
+              variants={fadeIn}
+              className="text-3xl font-bold text-center mb-12 text-sky-800">
+              Why Choose DinStack?
+            </motion.h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <motion.div variants={rotateIn} className="text-center">
+                <div className="bg-sky-500 text-white rounded-full p-4 inline-block mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-2  text-sky-700">
+                  Expertise
+                </h3>
+                <p className="text-gray-600">
+                  Our skilled professionals ensure top-notch service delivery.
+                </p>
+              </motion.div>
+              <motion.div variants={rotateIn} className="text-center">
+                <div className="bg-sky-500 text-white rounded-full p-4 inline-block mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-sky-700">
+                  Efficiency
+                </h3>
+                <p className="text-gray-600">
+                  Quick and efficient service to meet your deadlines.
+                </p>
+              </motion.div>
+              <motion.div variants={rotateIn} className="text-center">
+                <div className="bg-sky-500 text-white rounded-full p-4 inline-block mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-sky-700">
+                  Satisfaction
+                </h3>
+                <p className="text-gray-600">
+                  We stand behind our work with a satisfaction guarantee.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.section>
+
+        <motion.section
+          ref={developersRef}
+          initial="hidden"
+          animate={developersInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="container mx-auto px-4">
+          <motion.h2
+            variants={fadeIn}
+            className="text-3xl font-bold text-center mb-12 text-sky-800">
+            Meet Our Developers
+          </motion.h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {developers.map((developer, index) => (
+              <motion.div key={index} variants={fadeIn} className="text-center">
+                <Image
+                  src={developer.image}
+                  alt={developer.name}
+                  width={150}
+                  height={150}
+                  className="rounded-full mx-auto mb-4"
+                />
+                <h3 className="text-xl font-semibold mb-2 text-sky-700">
+                  {developer.name}
+                </h3>
+                <p className="text-gray-600 mb-2">{developer.role}</p>
+                <p className="text-sm text-gray-500">{developer.skills}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        <motion.section
+          ref={ctaRef}
+          initial="hidden"
+          animate={ctaInView ? "visible" : "hidden"}
+          variants={stagger}
+          className="container mx-auto px-4 text-center">
+          <motion.h2
+            variants={fadeIn}
+            className="text-3xl font-bold mb-6 text-sky-800">
+            Ready to Take Your Business to the Next Level?
+          </motion.h2>
+          <motion.p
+            variants={fadeIn}
+            className="text-xl mb-8 max-w-2xl mx-auto text-gray-600">
+            Join the ranks of satisfied clients who have transformed their
+            online presence with DinStack.
+          </motion.p>
+          <motion.div variants={fadeIn}>
+            <Button
+              asChild
+              size="lg"
+              className="bg-sky-600 text-white hover:bg-sky-700">
+              <Link href="/contact">
+                Start Your Journey <ArrowRight className="ml-2" />
+              </Link>
+            </Button>
+          </motion.div>
+        </motion.section>
+      </div>
+
+      <footer className="bg-sky-800 text-white py-12">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-lg font-semibold mb-4">About DinStack</h3>
+              <p className="text-sm">
+                Empowering businesses with cutting-edge web solutions and
+                unparalleled expertise.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/"
+                    className="text-sm hover:text-sky-300 transition duration-300">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/about"
+                    className="text-sm hover:text-sky-300 transition duration-300">
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/services"
+                    className="text-sm hover:text-sky-300 transition duration-300">
+                    Services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contact"
+                    className="text-sm hover:text-sky-300 transition duration-300">
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+              <p className="text-sm">Email: info@dinstack.com</p>
+              <p className="text-sm">Phone: (123) 456-7890</p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
+              <div className="flex space-x-4">
+                <a
+                  href="#"
+                  className="text-white hover:text-sky-300 transition duration-300">
+                  <Github className="w-6 h-6" />
+                </a>
+                <a
+                  href="#"
+                  className="text-white hover:text-sky-300 transition duration-300">
+                  <Linkedin className="w-6 h-6" />
+                </a>
+                <a
+                  href="#"
+                  className="text-white hover:text-sky-300 transition duration-300">
+                  <Twitter className="w-6 h-6" />
+                </a>
+                <a
+                  href="#"
+                  className="text-white hover:text-sky-300 transition duration-300">
+                  <Instagram className="w-6 h-6" />
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-sky-700 text-center text-sm">
+            © {new Date().getFullYear()} DinStack. All rights reserved.
+          </div>
+        </div>
       </footer>
-    </div>
+    </>
   );
 }
