@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { MapPin, Phone, Mail } from "lucide-react";
 import Image from "next/image";
+import emailjs from "@emailjs/browser";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -36,6 +37,7 @@ export default function Contact() {
     email: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -45,17 +47,38 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Here you would typically send the form data to your backend or a service like EmailJS
-    // For this example, we'll just simulate a successful submission
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+    try {
+      await emailjs.send(
+        "YOUR_SERVICE_ID", // Replace with your EmailJS service ID
+        "YOUR_TEMPLATE_ID", // Replace with your EmailJS template ID
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_email: "info@dinstack.com.ng",
+        },
+        "YOUR_USER_ID", // Replace with your EmailJS user ID
+      );
 
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
 
-    setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error",
+        description:
+          "There was an error sending your message. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -140,8 +163,9 @@ export default function Contact() {
                     <motion.div variants={fadeIn}>
                       <Button
                         type="submit"
-                        className="w-full bg-sky-600 text-white hover:bg-sky-700">
-                        Send Message
+                        className="w-full bg-sky-600 text-white hover:bg-sky-700"
+                        disabled={isSubmitting}>
+                        {isSubmitting ? "Sending..." : "Send Message"}
                       </Button>
                     </motion.div>
                   </form>
