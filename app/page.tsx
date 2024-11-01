@@ -284,10 +284,13 @@ export default function Home() {
                 layout="fill"
                 objectFit="cover"
                 quality={100}
+                className="brightness-50"
               />
             </motion.div>
           </AnimatePresence>
-          <div className="relative z-10 text-center text-white">
+          <div
+            className="relative z-10 text-center text-white
+          ">
             <motion.h1 variants={rotateIn} className="text-5xl font-bold mb-6">
               Elevate Your Business with DinStack
             </motion.h1>
