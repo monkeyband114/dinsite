@@ -97,7 +97,7 @@ const projects = [
 
 const testimonials = [
   {
-    name: "John Doe",
+    name: " Rohit Patel",
     company: "TechCorp",
     comment:
       "DinStack transformed our online presence. Their expertise in e-commerce solutions helped us increase our sales by 200%.",
@@ -105,7 +105,7 @@ const testimonials = [
     image: "/customer1.jpg",
   },
   {
-    name: "Jane Smith",
+    name: "Anitha Ryan",
     company: "FitLife",
     comment:
       "The team at DinStack delivered a robust fitness app that exceeded our expectations. Their cloud integration skills are top-notch!",
@@ -113,12 +113,12 @@ const testimonials = [
     image: "/customer2.jpg",
   },
   {
-    name: "Mike Johnson",
+    name: "Matthew Dover",
     company: "GreenTech",
     comment:
       "DinStack's custom plugin development for our IoT platform was crucial in making our product stand out in the market.",
     rating: 4,
-    image: "/customer3.jpg",
+    image: "/customer4.jpg",
   },
 ];
 
